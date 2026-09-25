@@ -28,6 +28,8 @@ profile_mydistro() {
 	apks="$apks
 		grub grub-efi
 
+		eudev eudev-hwids
+
 		gcompat fuse
 
 		pipewire pipewire-pulse pipewire-alsa wireplumber
@@ -37,7 +39,8 @@ profile_mydistro() {
 		gnome-control-center
 		networkmanager networkmanager-tui
 		dbus elogind polkit polkit-elogind
-		xf86-video-vesa xf86-video-intel xf86-video-amdgpu mesa-dri-gallium
+		xf86-video-vesa xf86-video-intel xf86-video-amdgpu xf86-video-nouveau
+		mesa-dri-gallium mesa-dri-nouveau mesa-vulkan-swrast
 		font-noto ttf-dejavu adwaita-icon-theme
 
 		firefox

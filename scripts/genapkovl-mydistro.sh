@@ -78,6 +78,11 @@ rc_add mdev sysinit
 rc_add hwdrivers sysinit
 rc_add modloop sysinit
 
+# eudev вместо/вместе с mdev — нужен GDM/elogind для доступа к /dev
+rc_add udev sysinit
+rc_add udev-trigger sysinit
+rc_add udev-settle sysinit
+
 rc_add hwclock boot
 rc_add modules boot
 rc_add sysctl boot
