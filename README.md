@@ -53,20 +53,20 @@ vendor/type2-runtime/         — исходники раннтайма AppImage
 
 ## Локальная сборка (без GitHub Actions)
 
-На Alpine-хосте или в `docker run -it --rm -v $PWD:/work alpine sh`:
+На Alpine-хосте (или в `docker run -it --rm -v $PWD:/work alpine:3.22 sh`):
 
 ```sh
 apk add abuild alpine-conf syslinux xorriso squashfs-tools \
-        grub grub-efi mtools dosfstools fakeroot
-abuild-keygen -a -i
+        grub grub-efi mtools dosfstools fakeroot sudo
+abuild-keygen -a -i -n
 chmod +x scripts/*.sh
 cd scripts
 ./mkimage.sh --profile mydistro --outdir /work/out --arch x86_64 \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
+    --repository http://dl-cdn.alpinelinux.org/alpine/v3.22/main \
+    --repository http://dl-cdn.alpinelinux.org/alpine/v3.22/community
 ```
 
-Готовый `.iso` появится в `/work/out`.
+Готовый `.iso` появится в `/work/out`. **Важно**: использовать хост-контейнер `alpine:3.22` (не `edge`!) — в Alpine 3.23 apk перешёл на apk-tools v3, где старый `mkimage.sh` падает с ошибкой `--usermode not allowed as root` (флаг `--no-chown` стал алиасом `--usermode`, который v3 запрещает при запуске от root).
 
 ## Сборка в GitHub Actions
 

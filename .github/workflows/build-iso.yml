@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: alpine:edge
+      image: alpine:3.22
 
     steps:
       - name: Checkout
@@ -45,8 +45,8 @@ jobs:
             --profile mydistro \
             --outdir /work/out \
             --arch x86_64 \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
+            --repository http://dl-cdn.alpinelinux.org/alpine/v3.22/main \
+            --repository http://dl-cdn.alpinelinux.org/alpine/v3.22/community
 
       - name: Загрузить артефакт
         uses: actions/upload-artifact@v4
