@@ -1,0 +1,55 @@
+name: Build MyDistro ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/build-iso.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:edge
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Установить зависимости сборки
+        run: |
+          apk update
+          apk add --no-cache \
+            abuild alpine-conf syslinux xorriso squashfs-tools \
+            grub grub-efi mtools dosfstools \
+            bash coreutils fakeroot
+
+      - name: Права на выполнение для скриптов профиля
+        run: |
+          chmod +x scripts/mkimg.mydistro.sh scripts/genapkovl-mydistro.sh scripts/mkimage.sh
+
+      - name: Ключи для подписи apkindex/modloop
+        run: abuild-keygen -a -i
+
+      - name: Больше места под TMPDIR
+        run: |
+          mkdir -p /work/tmp
+          echo "TMPDIR=/work/tmp" >> "$GITHUB_ENV"
+
+      - name: Собрать ISO
+        working-directory: scripts
+        run: |
+          ./mkimage.sh \
+            --profile mydistro \
+            --outdir /work/out \
+            --arch x86_64 \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+      - name: Загрузить артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: mydistro-iso
+          path: /work/out/*.iso
