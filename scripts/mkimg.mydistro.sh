@@ -40,7 +40,7 @@ profile_mydistro() {
 		networkmanager networkmanager-tui
 		dbus elogind polkit polkit-elogind
 		xf86-video-vesa xf86-video-intel xf86-video-amdgpu xf86-video-nouveau
-		mesa-dri-gallium mesa-dri-nouveau mesa-vulkan-swrast
+		mesa-dri-gallium mesa-vulkan-swrast
 		font-noto ttf-dejavu adwaita-icon-theme
 
 		firefox
